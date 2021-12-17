@@ -51,13 +51,27 @@ namespace terraform_training_webapp
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            if (Configuration.GetConnectionString("MyDbConnection") == "none")
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Todos}/{action=Index}/{id?}"
-                    );
-            });
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}"
+                        );
+                });
+            }
+            else
+            {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Todos}/{action=Index}/{id?}"
+                        );
+                });
+            }
+            
         }
     }
 }
